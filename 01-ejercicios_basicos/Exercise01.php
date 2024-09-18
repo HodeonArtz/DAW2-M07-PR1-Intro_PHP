@@ -36,6 +36,11 @@
     <?php echo $num1 ?> / <?php echo $num2 ?> =
     <?php echo $num1 / $num2; ?>
   </p>
+  <p>
+    <?php echo $num1 ?> es <?php 
+      echo $num1 > $num2 ? "mayor" : ($num1 < $num2 ? "menor" : "igual");
+    ?> que <?php echo $num2 ?>
+  </p>
 </body>
 
 </html>
