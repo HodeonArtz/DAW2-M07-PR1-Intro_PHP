@@ -23,7 +23,13 @@
     // También se podría utilizar el operando %  en la condición de un if para mostrar el número si es par
   ?>
   <!-- ------------------------------------------------------------- -->
-  <p>Números <?php echo "$num1-$num2" ?>:</p>
+  <p>Números <?php echo "$num2-0" ?>:</p>
+  <?php 
+  $a = $num2;
+    while ($a-- > 0) {
+      echo "$a ";
+    }
+  ?>
 </body>
 
 </html>
