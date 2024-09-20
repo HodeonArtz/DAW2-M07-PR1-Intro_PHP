@@ -25,10 +25,18 @@
   <!-- ------------------------------------------------------------- -->
   <p>Números <?php echo "$num2-0" ?>:</p>
   <?php 
-  $a = $num2;
-    while ($a-- > 0) {
-      echo "$a ";
+  $indexPt3 = $num2;
+    while ($indexPt3-- > 0) {
+      echo "$indexPt3 ";
     }
+  ?>
+  <!-- ------------------------------------------------------------- -->
+  <p>Números <?php echo "$num1-$num2" ?></p>
+  <?php 
+  $indexPt4 = $num1;
+    do {
+      echo "$indexPt4 ";
+    } while ($indexPt4++ < $num2);
   ?>
 </body>
 
