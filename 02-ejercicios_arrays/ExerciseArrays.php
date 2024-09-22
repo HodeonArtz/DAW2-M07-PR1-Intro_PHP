@@ -27,7 +27,7 @@
   <title>Ejercicios Arrays</title>
 </head>
 
-<body>
+<l>
   <h1>
     Ejercicio 1
   </h1>
@@ -97,6 +97,32 @@
       }
     ?>
   </p>
-</body>
+  <!-- ------------------------------------------------------------- -->
+  <h1>Ejercicio 7</h1>
+  <p>
+    Media de las notas:
+    <?php 
+      function sum($acc, $el): int{
+        $acc += $el;
+        return $acc;
+      }
+      $media_notas = array_reduce($notas_estudiantes,"sum") / count($notas_estudiantes);
+      echo number_format($media_notas,2);
+    ?>
+  </p>
+  <p>
+    Alumnos con nota por encima de la media:
+  </p>
+  <p>
+    <?php 
+      function nota_es_superior_a_media(int $nota): bool{
+        return $nota > $GLOBALS["media_notas"];
+      }
+      foreach (array_filter($notas_estudiantes,"nota_es_superior_a_media") as $key => $value) {
+        echo "$key <br>";
+      }
+    ?>
+  </p>
+</l>
 
 </html>
