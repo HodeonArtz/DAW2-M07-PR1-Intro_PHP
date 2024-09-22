@@ -8,6 +8,15 @@
   ];
   /* Ej 5 */
   $letters = "a,b,c,d,e,f";
+  /* Ej 6 */
+  $notas_estudiantes = [
+    "Miguel"=> 5,
+    "Luís"=>7,
+    "Marta"=>10,
+    "Isabel"=>8,
+    "Aitor"=>4,
+    "Pepe"=>1
+  ];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,6 +83,18 @@
         $index_ej_5--; 
       }
       
+    ?>
+  </p>
+  <!-- ------------------------------------------------------------- -->
+  <h1>Ejercicio 6</h1>
+  <p>
+    Notas de los estudiantes:
+    <?php 
+      $notas_ordenadas= $notas_estudiantes;
+      arsort($notas_ordenadas);
+      foreach ($notas_ordenadas as $key => $value){
+        echo "$key: $value ";
+      }
     ?>
   </p>
 </body>
