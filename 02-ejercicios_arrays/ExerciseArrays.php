@@ -27,7 +27,7 @@
   <title>Ejercicios Arrays</title>
 </head>
 
-<l>
+<body>
   <h1>
     Ejercicio 1
   </h1>
@@ -123,6 +123,21 @@
       }
     ?>
   </p>
-</l>
+  <!-- ------------------------------------------------------------- -->
+  <h1>Ejercicio 8</h1>
+  <p>
+    <?php 
+/*       $nota_mas_alta = 0; */
+      $mejor_alumno = [0];
+      foreach ($notas_estudiantes as $key => $value) {
+        if($value 
+        > array_values($mejor_alumno)[0])
+          $mejor_alumno = [$key => $value];
+      }
+    ?>
+    La nota más alta es <?php echo array_values($mejor_alumno)[0] ?> y el/la mejor alumn@ es
+    <?php echo array_keys($mejor_alumno)[0] ?>
+  </p>
+</body>
 
 </html>
