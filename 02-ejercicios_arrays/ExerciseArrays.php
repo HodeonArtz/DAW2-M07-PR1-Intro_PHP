@@ -1,10 +1,13 @@
 <?php 
+  /* Ej 1 */
   $datos = [
     "nombre" => "Sara",
     "apellido" => "Martínez",
     "edad" => 23,
     "ciudad" => "Barcelona",
-    ]
+  ];
+  /* Ej 5 */
+  $letters = "a,b,c,d,e,f";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,6 +61,19 @@
     <?php 
       unset($datos["ciudad"]);
       var_dump($datos);
+    ?>
+  </p>
+  <!-- ------------------------------------------------------------- -->
+  <h1>Ejercicio 5</h1>
+  <p>
+    <?php 
+      $arr_letters = array_reverse(explode(",",$letters));
+      $index_ej_5 = count($arr_letters);
+      foreach ($arr_letters as $key => $value) {
+        echo "letter {$index_ej_5}º: $value <br>";
+        $index_ej_5--; 
+      }
+      
     ?>
   </p>
 </body>
