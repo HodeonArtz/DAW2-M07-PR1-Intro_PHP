@@ -15,7 +15,7 @@
   <title>Ejercicios Arrays</title>
 </head>
 
-<h1>
+<body>
   <h1>
     Ejercicio 1
   </h1>
@@ -28,6 +28,7 @@
       }
     ?>
   </p>
+  <!-- ------------------------------------------------------------- -->
   <h1>
     Ejercicio 2
   </h1>
@@ -37,7 +38,20 @@
         echo "$key: $value<br>";
     ?>
   </p>
-
-</h1>
+  <!-- ------------------------------------------------------------- -->
+  <h1>
+    Ejercicio 3
+  </h1>
+  <p>
+    <?php 
+    $datos["edad"] = 24;
+    $index_ej_3 = 1;
+      foreach ($datos as $key => $value) {
+        echo "dato {$index_ej_3}º: ". $value ."<br>";
+        $index_ej_3++;
+      }
+    ?>
+  </p>
+</body>
 
 </html>
