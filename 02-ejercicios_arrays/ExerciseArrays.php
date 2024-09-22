@@ -15,7 +15,7 @@
   <title>Ejercicios Arrays</title>
 </head>
 
-<body>
+<h1>
   <h1>
     Ejercicio 1
   </h1>
@@ -28,6 +28,16 @@
       }
     ?>
   </p>
-</body>
+  <h1>
+    Ejercicio 2
+  </h1>
+  <p>
+    <?php 
+      foreach ($datos as $key => $value) 
+        echo "$key: $value<br>";
+    ?>
+  </p>
+
+</h1>
 
 </html>
