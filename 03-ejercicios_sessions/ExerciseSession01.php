@@ -30,6 +30,11 @@
     if(!$error_inventario){
       $_SESSION["worker"] = $_POST["worker-input"];
     }
+    if($_POST["submit"] == 'reset'){
+      $_SESSION["worker"] = $inventory_data["worker"];
+      $_SESSION["units_milk"] = $inventory_data["units_milk"];
+      $_SESSION["units_soft_drink"] = $inventory_data["units_soft_drink"];
+    }
   }
 
   /* --------------- */
