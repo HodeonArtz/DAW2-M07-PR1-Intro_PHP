@@ -19,6 +19,26 @@ $success_msg = '';
   function check_item(array $item):bool{
     return array_search($item,$_SESSION["items"]) !== false;
   }
+  function to_string_all_item_properties(array $item) : string{
+    return implode("",
+    array_map(fn($property)=> 
+    "<td>$property</td>",
+    $item)
+  );
+  }
+  function show_all_items():void{
+    if(!isset($_SESSION["items"]))
+    return;
+    echo implode("",
+      array_map(fn($item)=> "<tr>". 
+      to_string_all_item_properties($item) . 
+      "<td><input type='hidden' name='position' value='". array_search($item, $_SESSION["items"]) . "'>
+            <input type='submit' name='action' value='Edit'>
+            <input type='submit' name='action' value='Delete'></td></tr>",
+            $_SESSION["items"])
+    );
+  }
+  // --------------------------------------------------
   function add_item(): void {
     $item = create_item($_POST["product_name"], $_POST["quantity"], $_POST["price"]);
     if(!check_item($item)){
@@ -31,22 +51,8 @@ $success_msg = '';
     }
     $GLOBALS["error_msg"] = "This item already exists.";
   }
-  function to_string_all_item_properties(array $item) : string{
-    return implode("",
-    array_map(fn($property)=> 
-    "<td>$property</td>",
-    $item)
-  );
-  }
-  function show_all_items():void{
-    echo implode("",
-      array_map(fn($item)=> "<tr>". 
-      to_string_all_item_properties($item) . 
-      "<td><input type='hidden' name='position' value='". array_search($item, $_SESSION["items"]) . "'>
-            <input type='submit' name='action' value='Edit'>
-            <input type='submit' name='action' value='Delete'></td></tr>",
-            $_SESSION["items"])
-    );
+  function reset_list():void{
+    unset($_SESSION["items"]);
   }
 ?>
 <?php
@@ -54,6 +60,9 @@ $success_msg = '';
     switch ($_POST["submit"]) {
       case 'Add':
         add_item();
+        break;
+      case 'Reset':
+        reset_list();
         break;
     }
   }
