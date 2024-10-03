@@ -1,10 +1,13 @@
 <?php 
   session_start();
+
   if(!isset($_SESSION["items"])){
     $_SESSION["items"] = [];
   }
 ?>
 <?php 
+$error_msg = '';
+$success_msg = '';
   function create_item(string $name, int $quantity, int $price): array {
     return [
       "name" => $name,
@@ -13,11 +16,20 @@
       "cost" => $price*$quantity
     ];
   }
+  function check_item(array $item):bool{
+    return array_search($item,$_SESSION["items"]) !== false;
+  }
   function add_item(): void {
-    array_push(
-      $_SESSION["items"],
-      create_item($_POST["product_name"], $_POST["quantity"], $_POST["price"])
-    );
+    $item = create_item($_POST["product_name"], $_POST["quantity"], $_POST["price"]);
+    if(!check_item($item)){
+      array_push(
+        $_SESSION["items"],
+        $item
+      );
+      $GLOBALS["success_msg"] = "Item added properly.";
+      return;
+    }
+    $GLOBALS["error_msg"] = "This item already exists.";
   }
   function to_string_all_item_properties(array $item) : string{
     return implode("",
@@ -30,7 +42,7 @@
     echo implode("",
       array_map(fn($item)=> "<tr>". 
       to_string_all_item_properties($item) . 
-      "<td><input type='hidden' name='position' value=''>
+      "<td><input type='hidden' name='position' value='". array_search($item, $_SESSION["items"]) . "'>
             <input type='submit' name='action' value='Edit'>
             <input type='submit' name='action' value='Delete'></td></tr>",
             $_SESSION["items"])
@@ -56,6 +68,10 @@
   <style>
   .success-msg {
     color: green;
+  }
+
+  .error-msg {
+    color: red;
   }
 
   table,
@@ -91,7 +107,8 @@
     <input type="submit" value="Update" name="submit">
     <input type="submit" value="Reset" name="submit"><br>
   </form>
-  <p class="success-msg">Item _ properly.</p>
+  <p class="success-msg"><?php echo $success_msg ?></p>
+  <p class="error-msg"><?php echo $error_msg ?></p>
   <table>
     <thead>
       <tr>
