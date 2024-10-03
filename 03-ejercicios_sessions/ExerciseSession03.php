@@ -32,9 +32,15 @@ $success_msg = '';
     echo implode("",
       array_map(fn($item)=> "<tr>". 
       to_string_all_item_properties($item) . 
-      "<td><input type='hidden' name='position' value='". array_search($item, $_SESSION["items"]) . "'>
+      " <td>
+          <form action='' method='POST'>
+            <input type='hidden' name='position' value='". array_search($item, $_SESSION["items"]) . "'>
             <input type='submit' name='action' value='Edit'>
-            <input type='submit' name='action' value='Delete'></td></tr>",
+            <input type='submit' name='action' value='Delete'>
+            </form>
+          </td>
+      </tr>
+      ",
             $_SESSION["items"])
     );
   }
@@ -54,8 +60,26 @@ $success_msg = '';
   function reset_list():void{
     unset($_SESSION["items"]);
   }
+  function select_item():void{
+    $_SESSION["selected_item_pos"] = (int)$_POST["position"];
+    $form_selected_item = $_SESSION["items"][$_SESSION["selected_item_pos"]];
+    $GLOBALS["success_msg"] = "Item '{$form_selected_item["name"]}' selected properly.";
+  }
+  /* function delete_item():void{
+
+  } */
 ?>
 <?php
+  if(isset($_POST["action"])){
+    switch ($_POST["action"]) {
+      case 'Edit':
+        select_item();
+        break;
+      case 'Delete':
+        // delete_item();
+        break;
+    }
+  }
   if(isset($_POST["submit"])){
     switch ($_POST["submit"]) {
       case 'Add':
