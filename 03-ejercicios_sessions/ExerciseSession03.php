@@ -16,6 +16,11 @@ $success_msg = '';
       "cost" => $price*$quantity
     ];
   }
+$selected_item = [
+  "name" => "",
+  "quantity"=> "",
+  "price"=> "",
+];
   function check_item(array $item):bool{
     return array_search($item,$_SESSION["items"]) !== false;
   }
@@ -62,8 +67,8 @@ $success_msg = '';
   }
   function select_item():void{
     $_SESSION["selected_item_pos"] = (int)$_POST["position"];
-    $form_selected_item = $_SESSION["items"][$_SESSION["selected_item_pos"]];
-    $GLOBALS["success_msg"] = "Item '{$form_selected_item["name"]}' selected properly.";
+    $GLOBALS["selected_item"] = $_SESSION["items"][$_SESSION["selected_item_pos"]];
+    $GLOBALS["success_msg"] = "Item '{$GLOBALS["selected_item"]["name"]}' selected properly.";
   }
   /* function delete_item():void{
 
@@ -130,11 +135,11 @@ $success_msg = '';
   <form action="" method="post" id="main">
     <p>
       <label for="product_name">name: </label>
-      <input type="text" name="product_name" id="product_name"><br>
+      <input type="text" name="product_name" id="product_name" value="<?php echo $selected_item["name"] ?>"><br>
       <label for="quantity">quantity: </label>
-      <input type="text" name="quantity" id="quantity"><br>
+      <input type="text" name="quantity" id="quantity" value="<?php echo $selected_item["quantity"] ?>"><br>
       <label for="price">price: </label>
-      <input type="text" name="price" id="price"><br>
+      <input type="text" name="price" id="price" value="<?php echo $selected_item["price"] ?>"><br>
     </p>
     <input type="submit" value="Add" name="submit">
     <input type="submit" value="Update" name="submit">
