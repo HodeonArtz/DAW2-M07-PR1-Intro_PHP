@@ -21,11 +21,31 @@ $selected_item = [
   "quantity"=> "",
   "price"=> "",
 ];
-  function check_item(array $item):bool{
+  function check_if_item_repeats(array $item):bool{
     $product_name = $item["name"];
-    $item_names = array_map(fn($it)=>$it["name"],$_SESSION["items"]);
-    return array_search($product_name,$item_names) !== false;
+    $item_names = array_map(
+      fn($it)=>$it["name"],
+      $_SESSION["items"]
+    );
+
+    return array_search(
+      needle: $product_name,
+      haystack: $item_names)
+       !== false;
   }
+  function check_name_availability(string $name):bool{
+    // true si es el nombre propio u otro nombre que no exista
+    // false si el nombre no es propio y ya existe
+    $old_name = $_SESSION["items"][$_SESSION["selected_item_pos"]]["name"];
+    $item_names = array_map(fn($item)=>$item["name"], $_SESSION["items"]);
+    return !in_array(
+      $name, 
+      array_filter(
+        $item_names,
+        fn($item) => 
+        $item != $old_name));
+  }    
+
   function to_string_all_item_properties(array $item) : string{
     return implode("",
     array_map(fn($property)=> 
@@ -54,7 +74,7 @@ $selected_item = [
   // --------------------------------------------------
   function add_item(): void {
     $item = create_item($_POST["product_name"], $_POST["quantity"], $_POST["price"]);
-    if(!check_item($item)){
+    if(!check_if_item_repeats($item)){
       array_push(
         $_SESSION["items"],
         $item
@@ -64,8 +84,27 @@ $selected_item = [
     }
     $GLOBALS["error_msg"] = "This item already exists.";
   }
+
+  function update_item ():void{
+    if(!isset($_SESSION["selected_item_pos"])){
+      $GLOBALS["error_msg"] = "Select an item first! (click the 'edit' button)";
+      return;
+    }
+    $item_update = create_item($_POST["product_name"], $_POST["quantity"], $_POST["price"]);
+    // si hay items que tengan un nombre que sea el OLD u otro que no se repita...
+    if(check_name_availability($item_update["name"])){
+      $_SESSION["items"][$_SESSION["selected_item_pos"]] = $item_update;
+      $GLOBALS["success_msg"] = "Item updated properly.";
+      unset(
+        $_SESSION["selected_item_pos"]
+      );
+      return;
+    }
+    $GLOBALS["error_msg"] = "There's another item with the same name.";
+  }
   function reset_list():void{
     unset($_SESSION["items"]);
+    unset($_SESSION["selected_item_pos"]);
   }
   function select_item():void{
     $_SESSION["selected_item_pos"] = (int)$_POST["position"];
@@ -95,6 +134,9 @@ $selected_item = [
     switch ($_POST["submit"]) {
       case 'Add':
         add_item();
+        break;
+      case 'Update':
+        update_item();
         break;
       case 'Reset':
         reset_list();
