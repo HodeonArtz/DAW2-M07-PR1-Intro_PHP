@@ -22,7 +22,9 @@ $selected_item = [
   "price"=> "",
 ];
   function check_item(array $item):bool{
-    return array_search($item,$_SESSION["items"]) !== false;
+    $product_name = $item["name"];
+    $item_names = array_map(fn($it)=>$it["name"],$_SESSION["items"]);
+    return array_search($product_name,$item_names) !== false;
   }
   function to_string_all_item_properties(array $item) : string{
     return implode("",
@@ -70,9 +72,13 @@ $selected_item = [
     $GLOBALS["selected_item"] = $_SESSION["items"][$_SESSION["selected_item_pos"]];
     $GLOBALS["success_msg"] = "Item '{$GLOBALS["selected_item"]["name"]}' selected properly.";
   }
-  /* function delete_item():void{
+   function delete_item():void{
+    $GLOBALS["success_msg"] = "Item '{$_SESSION["items"][$_POST["position"]]["name"]}' deleted properly.";
+    unset(
+      $_SESSION["items"][$_POST["position"]]
+    );
 
-  } */
+  } 
 ?>
 <?php
   if(isset($_POST["action"])){
@@ -81,7 +87,7 @@ $selected_item = [
         select_item();
         break;
       case 'Delete':
-        // delete_item();
+         delete_item();
         break;
     }
   }
@@ -137,9 +143,9 @@ $selected_item = [
       <label for="product_name">name: </label>
       <input type="text" name="product_name" id="product_name" value="<?php echo $selected_item["name"] ?>"><br>
       <label for="quantity">quantity: </label>
-      <input type="text" name="quantity" id="quantity" value="<?php echo $selected_item["quantity"] ?>"><br>
+      <input type="number" name="quantity" id="quantity" value="<?php echo $selected_item["quantity"] ?>"><br>
       <label for="price">price: </label>
-      <input type="text" name="price" id="price" value="<?php echo $selected_item["price"] ?>"><br>
+      <input type="number" name="price" id="price" value="<?php echo $selected_item["price"] ?>"><br>
     </p>
     <input type="submit" value="Add" name="submit">
     <input type="submit" value="Update" name="submit">
