@@ -1,6 +1,10 @@
 <?php 
   session_start();
 
+  /* 
+    Aquí se inicia unos array items en el $_SESSION para guardar la lista de items
+     en un array y para dejar el precio total en 0.
+  */
   if(!isset($_SESSION["items"])){
     $_SESSION["items"] = [];
     $_SESSION["total_price"] = 0;
@@ -9,9 +13,26 @@
   
 ?>
 <?php 
+/**
+ * @var string
+ * Esta variable sirve para indicar un mensaje de error que más tarde se utilizará en
+ * la parte de HTML
+ */
 $error_msg = '';
+/**
+ * @var string
+ * Esta variable sirve para indicar un mensaje de éxito que más tarde se utilizará en
+ * la parte de HTML
+ */
 $success_msg = '';
 
+  /**
+   * Crea un array associativo con el nombre, la cantidad, y el precio de un ítem.
+   * @param string $name Nombre del producto / ítem
+   * @param int $quantity Cantidad de este producto.
+   * @param int $price Cuánto cuesta el precio por unidad
+   * @return array
+   */
   function create_item(string $name, int $quantity, int $price): array {
     return [
       "name" => $name,
@@ -41,13 +62,17 @@ $selected_item = [
     // true si es el nombre propio u otro nombre que no exista
     // false si el nombre no es propio y ya existe
     $old_name = $_SESSION["items"][$_SESSION["selected_item_pos"]]["name"];
-    $item_names = array_map(fn($item)=>$item["name"], $_SESSION["items"]);
+    $item_names = 
+      array_map(
+        fn($item)=>$item["name"], 
+        $_SESSION["items"]
+      );
     return !in_array(
       $name, 
       array_filter(
-        $item_names,
-        fn($item) => 
-        $item != $old_name));
+        $item_names,fn($item) => $item != $old_name
+      )
+    );
   }    
 
   function to_string_all_item_properties(array $item) : string{
@@ -65,24 +90,27 @@ $selected_item = [
       to_string_all_item_properties($item) . 
       " <td>
           <form action='' method='POST'>
-            <input type='hidden' name='position' value='". array_search($item, $_SESSION["items"]) . "'>
+            <input type='hidden' name='position' value='". 
+            array_search($item, $_SESSION["items"]) .
+            "'>
             <input type='submit' name='action' value='Edit'>
             <input type='submit' name='action' value='Delete'>
             </form>
           </td>
       </tr>
       ",
-            $_SESSION["items"])
+            array: $_SESSION["items"])
     );
   }
   // --------------------------------------------------
   function add_item(): void {
-    $item = create_item($_POST["product_name"], $_POST["quantity"], $_POST["price"]);
+    $item = create_item(
+      name: $_POST["product_name"], 
+      quantity: $_POST["quantity"], 
+      price: $_POST["price"]
+    );
     if(!check_if_item_repeats($item)){
-      array_push(
-        $_SESSION["items"],
-        $item
-      );
+      array_push($_SESSION["items"],$item);
       $GLOBALS["success_msg"] = "Item added properly.";
       return;
     }
@@ -94,8 +122,11 @@ $selected_item = [
       $GLOBALS["error_msg"] = "Select an item first! (click the 'edit' button)";
       return;
     }
-    $item_update = create_item($_POST["product_name"], $_POST["quantity"], $_POST["price"]);
-    // si hay items que tengan un nombre que sea el OLD u otro que no se repita...
+    $item_update = create_item(
+      $_POST["product_name"], 
+      $_POST["quantity"], 
+      $_POST["price"]
+    );
     if(check_name_availability($item_update["name"])){
       $_SESSION["items"][$_SESSION["selected_item_pos"]] = $item_update;
       $GLOBALS["success_msg"] = "Item updated properly.";
@@ -124,10 +155,12 @@ $selected_item = [
   function select_item():void{
     $_SESSION["selected_item_pos"] = (int)$_POST["position"];
     $GLOBALS["selected_item"] = $_SESSION["items"][$_SESSION["selected_item_pos"]];
-    $GLOBALS["success_msg"] = "Item '{$GLOBALS["selected_item"]["name"]}' selected properly.";
+    $GLOBALS["success_msg"] = 
+    "Item '{$GLOBALS["selected_item"]["name"]}' selected properly.";
   }
    function delete_item():void{
-    $GLOBALS["success_msg"] = "Item '{$_SESSION["items"][$_POST["position"]]["name"]}' deleted properly.";
+    $GLOBALS["success_msg"] = 
+    "Item '{$_SESSION["items"][$_POST["position"]]["name"]}' deleted properly.";
     unset(
       $_SESSION["items"][$_POST["position"]]
     );
