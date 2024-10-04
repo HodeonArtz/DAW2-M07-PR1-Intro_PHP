@@ -58,3 +58,4 @@ Los enunciados de cada ejercicio los puedes encontrar **<a href="./DAW2M07UF1P1_
 - #### [Sessions](./03-ejercicios_sessions)
   - [Ejercicio 1](./03-ejercicios_sessions/ExerciseSession01.php)
   - [Ejercicio 2](./03-ejercicios_sessions/ExerciseSession02.php)
+  - [Ejercicio 3 EXTRA](./03-ejercicios_sessions/ExerciseSession03.php)
