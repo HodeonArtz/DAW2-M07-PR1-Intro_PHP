@@ -3,11 +3,15 @@
 
   if(!isset($_SESSION["items"])){
     $_SESSION["items"] = [];
+    $_SESSION["total_price"] = 0;
   }
+
+  
 ?>
 <?php 
 $error_msg = '';
 $success_msg = '';
+
   function create_item(string $name, int $quantity, int $price): array {
     return [
       "name" => $name,
@@ -105,7 +109,18 @@ $selected_item = [
   function reset_list():void{
     unset($_SESSION["items"]);
     unset($_SESSION["selected_item_pos"]);
+    unset($_SESSION["total_price"]);
   }
+  function calculate_total():void{
+    $_SESSION["total_price"] = 
+      array_reduce(
+        $_SESSION["items"],
+        fn($acc, $item) => $acc + $item["cost"]
+      );
+      $GLOBALS["success_msg"] = "Total calculated properly.";
+  }
+  // --------------------------------------------------
+
   function select_item():void{
     $_SESSION["selected_item_pos"] = (int)$_POST["position"];
     $GLOBALS["selected_item"] = $_SESSION["items"][$_SESSION["selected_item_pos"]];
@@ -141,6 +156,9 @@ $selected_item = [
         break;
       case 'Reset':
         reset_list();
+        break;
+      case 'Calculate total':
+        calculate_total();
         break;
     }
   }
@@ -213,7 +231,7 @@ $selected_item = [
     <tfoot>
       <tr>
         <td colspan="3" class="total-cell">Total:</td>
-        <td>0</td>
+        <td><?php echo $_SESSION["total_price"] ?></td>
         <td>
           <input type="submit" value="Calculate total" name="submit" form="main">
         </td>
