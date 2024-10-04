@@ -140,7 +140,7 @@ $selected_item = [
   function reset_list():void{
     unset($_SESSION["items"]);
     unset($_SESSION["selected_item_pos"]);
-    unset($_SESSION["total_price"]);
+    $_SESSION["total_price"] = 0;
   }
   function calculate_total():void{
     $_SESSION["total_price"] = 
