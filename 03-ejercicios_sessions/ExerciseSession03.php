@@ -116,6 +116,7 @@ $selected_item = [
     unset(
       $_SESSION["items"][$_POST["position"]]
     );
+    unset($_SESSION["selected_item_pos"]);
 
   } 
 ?>
@@ -190,7 +191,8 @@ $selected_item = [
       <input type="number" name="price" id="price" value="<?php echo $selected_item["price"] ?>"><br>
     </p>
     <input type="submit" value="Add" name="submit">
-    <input type="submit" value="Update" name="submit">
+    <input type="submit" <?php echo isset($_POST["action"]) && $_POST["action"] == "Edit" ? "" : "disabled" ?>
+      value="Update" name="submit">
     <input type="submit" value="Reset" name="submit"><br>
   </form>
   <p class="success-msg"><?php echo $success_msg ?></p>
