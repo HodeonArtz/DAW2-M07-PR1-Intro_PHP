@@ -27,11 +27,13 @@
     ?>
   </p>
   <p>
+    Total: <?php echo $total ?>
+  </p>
+  <p>
     Cantidad de números pares: <?php echo $n_numeros_pares ?>
   </p>
   <p>
     Cantidad de números impares: <?php echo $n_numeros_impares ?>
-
   </p>
 </body>
 
